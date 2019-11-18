@@ -63,6 +63,10 @@
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   position: relative;
   z-index: 1;
 }
@@ -76,6 +80,33 @@
     font-size: 38rpx;
     color: #303133;
     margin-left: 20rpx;
+    display: inline-block;
+    margin-top: 10%;
+}
+.user-info-box .portrait-box {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.login-box {
+  width: 30%;
+}
+.login-box .login-btn {
+    width: 100%;
+    border-radius: 50rpx;
+    background-color: #f5ae7d;
+    font-size: 40rpx;
+    opacity: 0.8;
+    color: #fff;
 }
 .vip-card-box {
   display: -webkit-box;

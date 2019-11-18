@@ -348,6 +348,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var _default =
 
 {
@@ -400,6 +401,7 @@ var _default =
       uni.request({
         url: 'http://127.0.0.1:8001/goods/showType',
         success: function success(res) {
+          console.log(res);
           _this.parentType = res.data.data2;
         } });
 

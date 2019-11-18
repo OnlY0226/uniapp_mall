@@ -291,30 +291,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 {
   components: {
     share: share },
 
   data: function data() {
     return {
+      detail: {},
       specClass: 'none',
       specSelected: [],
-
+      id: '',
       favorite: true,
       shareList: [],
-      imgList: [
-      {
+      imgList: [{
         src: 'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg' },
 
       {
@@ -333,8 +322,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-      specList: [
-      {
+      specList: [{
         id: 1,
         name: '尺寸' },
 
@@ -343,8 +331,7 @@ __webpack_require__.r(__webpack_exports__);
         name: '颜色' }],
 
 
-      specChildList: [
-      {
+      specChildList: [{
         id: 1,
         pid: 1,
         name: 'XS' },
@@ -392,15 +379,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
   },
-  onLoad: function () {var _onLoad = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(options) {var _this = this;var id;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-
-              //接收传值,id里面放的是标题，因为测试数据并没写id 
-              id = options.id;
-              if (id) {
-                this.$api.msg("\u70B9\u51FB\u4E86".concat(id));
-              }
-
-
+  onLoad: function () {var _onLoad = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(options) {var _this = this;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              this.id = options.id;
               //规格 默认选中第一条
               this.specList.forEach(function (item) {var _iteratorNormalCompletion = true;var _didIteratorError = false;var _iteratorError = undefined;try {
                   for (var _iterator = _this.specChildList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {var cItem = _step.value;
@@ -410,8 +390,9 @@ __webpack_require__.r(__webpack_exports__);
                       break; //forEach不能使用break
                     }
                   }} catch (err) {_didIteratorError = true;_iteratorError = err;} finally {try {if (!_iteratorNormalCompletion && _iterator.return != null) {_iterator.return();}} finally {if (_didIteratorError) {throw _iteratorError;}}}
-              });_context.next = 5;return (
-                this.$api.json('shareList'));case 5:this.shareList = _context.sent;case 6:case "end":return _context.stop();}}}, _callee, this);}));function onLoad(_x) {return _onLoad.apply(this, arguments);}return onLoad;}(),
+              });_context.next = 4;return (
+                this.$api.json('shareList'));case 4:this.shareList = _context.sent;
+              this.show();case 6:case "end":return _context.stop();}}}, _callee, this);}));function onLoad(_x) {return _onLoad.apply(this, arguments);}return onLoad;}(),
 
   methods: {
     //规格弹窗开关
@@ -462,7 +443,20 @@ __webpack_require__.r(__webpack_exports__);
         url: "/pages/order/createOrder" });
 
     },
-    stopPrevent: function stopPrevent() {} } };exports.default = _default;
+    stopPrevent: function stopPrevent() {},
+    show: function show() {var _this4 = this;
+      uni.request({
+        data: {
+          goodId: this.id },
+
+        method: "GET",
+        url: "http://127.0.0.1:8001/mallgoods/detail",
+        success: function success(res) {
+          _this4.detail = res.data.result,
+          console.log(_this4.detail);
+        } });
+
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

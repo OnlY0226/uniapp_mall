@@ -17,9 +17,9 @@
 			<text class="cate-item yticon icon-fenlei1" @click="toggleCateMask('show')"></text>
 		</view>
 		<view class="goods-list">
-			<view v-for="(item, index) in goodsLists" :key="index" class="goods-item" @click="navToDetailPage(item)">
+			<view v-for="(item, index) in goodsLists" :key="index" class="goods-item" @click="navToDetailPage(item.id)">
 				<view class="image-wrapper">
-					<image :src="item.goodimgurl" mode="aspectFill"></image>
+					<image :src="item.goodimgurl" mode="aspectFit"></image>
 				</view>
 				<text class="title clamp">{{item.goodname}}</text>
 				<view class="price-box">
@@ -63,8 +63,6 @@
 				goodTypeId: '', //已选子分类id
 				parentTypeId:'', //已选父分类id
 				priceOrder: 0, //1 价格从低到高 2价格从高到低
-				cateList: [],
-				goodsList: [],
 				goodsLists:[],
 				goodTypeList:[]
 			};
@@ -88,17 +86,6 @@
 		},
 		methods: {
 
-			//加载分类
-			async loadCateList(fid, sid) {
-				let list = await this.$api.json('cateList');
-				let cateList = list.filter(item => item.pid == fid);
-
-				cateList.forEach(item => {
-					let tempList = list.filter(val => val.pid == item.id);
-					item.child = tempList;
-				})
-				this.cateList = cateList;
-			},
 			//加载商品 ，带下拉刷新和上滑加载
 			async loadData(type = 'add', loading) {
 				//没有更多直接返回
@@ -110,27 +97,27 @@
 				} else {
 					this.loadingType = 'more'
 				}
-s
+
 				if (type === 'refresh') {
 					this.goodsLists = [];
 				}
 				//筛选，测试数据直接前端筛选了
 				if (this.filterIndex === 1) {
-					goodsLists.sort((a, b) => b.sales - a.sales)
+					goodsLists.sort((a, b) => b.goodsaled - a.goodsaled)
 				}
 				if (this.filterIndex === 2) {
 					goodsLists.sort((a, b) => {
 						if (this.priceOrder == 1) {
-							return a.price - b.price;
+							return a.goodprice - b.goodprice;
 						}
-						return b.price - a.price;
+						return b.goodprice - a.goodprice;
 					})
 				}
 
-				this.goodsLists = this.goodsLists.concat(goodsLists);//连接两个或多个数组
+				this.goodsLists = this.goodsLists.concat(this.goodsLists);//连接两个或多个数组
 
 				//判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
-				this.loadingType = this.goodsLists.length > 20 ? 'nomore' : 'more';
+				this.loadingType = this.goodsLists.length > 0 ? 'nomore' : 'more';
 				if (type === 'refresh') {
 					if (loading == 1) {
 						uni.hideLoading()
@@ -182,9 +169,9 @@ s
 				})
 			},
 			//详情
-			navToDetailPage(item) {
+			navToDetailPage(id) {
 				//测试数据没有写id，用title代替
-				let id = item.title;
+				
 				uni.navigateTo({
 					url: `/pages/product/product?id=${id}`
 				})
@@ -203,9 +190,8 @@ s
 					},
 					url: 'http://127.0.0.1:8001/mallgoods/show',
 					success: (res) => {
-						this.goodsLists = res.data.data
-						this.goodTypeList = res.data.data2
-						console.log(res);
+						this.goodsLists = res.data.data;
+						this.goodTypeList = res.data.data2;
 					}
 				})
 			},
@@ -217,8 +203,6 @@ s
 			// #endif
 			this.goodTypeId = options.tid;
 			this.parentTypeId = options.sid;
-			console.log(this.parentTypeId);
-			this.loadCateList(options.fid, options.sid);
 			this.loadData();
 			this.showGoods(this.goodTypeId);
 		},

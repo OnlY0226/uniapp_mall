@@ -178,7 +178,7 @@ page {
 }
 /* 秒杀专区 */
 .seckill-section {
-  padding: 4rpx 30rpx 24rpx;
+  padding: 4rpx 30rpx 50rpx;
   background: #fff;
 }
 .seckill-section .s-header {
@@ -250,6 +250,12 @@ page {
 }
 .seckill-section .floor-item .price {
       color: #fa436a;
+}
+.tip {
+  font-size: 28rpx;
+  color: #909399;
+  margin: 0 20rpx 0 40rpx;
+  float: right;
 }
 .f-header {
   display: -webkit-box;

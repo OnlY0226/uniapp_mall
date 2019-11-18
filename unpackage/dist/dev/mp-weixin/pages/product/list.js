@@ -187,8 +187,6 @@ __webpack_require__.r(__webpack_exports__);
       goodTypeId: '', //已选子分类id
       parentTypeId: '', //已选父分类id
       priceOrder: 0, //1 价格从低到高 2价格从高到低
-      cateList: [],
-      goodsList: [],
       goodsLists: [],
       goodTypeList: [] };
 
@@ -212,56 +210,45 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
 
-    //加载分类
-    loadCateList: function () {var _loadCateList = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(fid, sid) {var list, cateList;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
-                  this.$api.json('cateList'));case 2:list = _context.sent;
-                cateList = list.filter(function (item) {return item.pid == fid;});
-
-                cateList.forEach(function (item) {
-                  var tempList = list.filter(function (val) {return val.pid == item.id;});
-                  item.child = tempList;
-                });
-                this.cateList = cateList;case 6:case "end":return _context.stop();}}}, _callee, this);}));function loadCateList(_x, _x2) {return _loadCateList.apply(this, arguments);}return loadCateList;}(),
-
     //加载商品 ，带下拉刷新和上滑加载
-    loadData: function () {var _loadData = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var _this = this;var type,loading,_args2 = arguments;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:type = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : 'add';loading = _args2.length > 1 ? _args2[1] : undefined;if (!(
+    loadData: function () {var _loadData = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var _this = this;var type,loading,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:type = _args.length > 0 && _args[0] !== undefined ? _args[0] : 'add';loading = _args.length > 1 ? _args[1] : undefined;if (!(
 
-                type === 'add')) {_context2.next = 8;break;}if (!(
-                this.loadingType === 'nomore')) {_context2.next = 5;break;}return _context2.abrupt("return");case 5:
+                type === 'add')) {_context.next = 8;break;}if (!(
+                this.loadingType === 'nomore')) {_context.next = 5;break;}return _context.abrupt("return");case 5:
 
 
-                this.loadingType = 'loading';_context2.next = 9;break;case 8:
+                this.loadingType = 'loading';_context.next = 9;break;case 8:
 
                 this.loadingType = 'more';case 9:
 
-                s;
+
                 if (type === 'refresh') {
                   this.goodsLists = [];
                 }
                 //筛选，测试数据直接前端筛选了
                 if (this.filterIndex === 1) {
-                  goodsLists.sort(function (a, b) {return b.sales - a.sales;});
+                  goodsLists.sort(function (a, b) {return b.goodsaled - a.goodsaled;});
                 }
                 if (this.filterIndex === 2) {
                   goodsLists.sort(function (a, b) {
                     if (_this.priceOrder == 1) {
-                      return a.price - b.price;
+                      return a.goodprice - b.goodprice;
                     }
-                    return b.price - a.price;
+                    return b.goodprice - a.goodprice;
                   });
                 }
 
-                this.goodsLists = this.goodsLists.concat(goodsLists); //连接两个或多个数组
+                this.goodsLists = this.goodsLists.concat(this.goodsLists); //连接两个或多个数组
 
                 //判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
-                this.loadingType = this.goodsLists.length > 20 ? 'nomore' : 'more';
+                this.loadingType = this.goodsLists.length > 0 ? 'nomore' : 'more';
                 if (type === 'refresh') {
                   if (loading == 1) {
                     uni.hideLoading();
                   } else {
                     uni.stopPullDownRefresh();
                   }
-                }case 16:case "end":return _context2.stop();}}}, _callee2, this);}));function loadData() {return _loadData.apply(this, arguments);}return loadData;}(),
+                }case 15:case "end":return _context.stop();}}}, _callee, this);}));function loadData() {return _loadData.apply(this, arguments);}return loadData;}(),
 
     //筛选点击
     tabClick: function tabClick(index) {
@@ -306,9 +293,9 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     //详情
-    navToDetailPage: function navToDetailPage(item) {
+    navToDetailPage: function navToDetailPage(id) {
       //测试数据没有写id，用title代替
-      var id = item.title;
+
       uni.navigateTo({
         url: "/pages/product/product?id=".concat(id) });
 
@@ -329,7 +316,6 @@ __webpack_require__.r(__webpack_exports__);
         success: function success(res) {
           _this3.goodsLists = res.data.data;
           _this3.goodTypeList = res.data.data2;
-          console.log(res);
         } });
 
     } },
@@ -341,8 +327,6 @@ __webpack_require__.r(__webpack_exports__);
 
     this.goodTypeId = options.tid;
     this.parentTypeId = options.sid;
-    console.log(this.parentTypeId);
-    this.loadCateList(options.fid, options.sid);
     this.loadData();
     this.showGoods(this.goodTypeId);
   } };exports.default = _default;

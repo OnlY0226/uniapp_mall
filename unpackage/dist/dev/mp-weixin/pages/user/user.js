@@ -222,10 +222,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 10);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var listCell = function listCell() {return __webpack_require__.e(/*! import() | components/mix-list-cell */ "components/mix-list-cell").then(__webpack_require__.bind(null, /*! @/components/mix-list-cell */ 177));};
 
 
-var startY = 0,moveY = 0,pageAtTop = true;var _default =
+
+
+var _vuex = __webpack_require__(/*! vuex */ 10);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var listCell = function listCell() {return __webpack_require__.e(/*! import() | components/mix-list-cell */ "components/mix-list-cell").then(__webpack_require__.bind(null, /*! @/components/mix-list-cell */ 213));};
+
+
+var startY = 0,
+moveY = 0,
+pageAtTop = true;var _default =
 {
   components: {
     listCell: listCell },
@@ -237,8 +243,7 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
       moving: false };
 
   },
-  onLoad: function onLoad() {
-  },
+  onLoad: function onLoad() {},
 
 
 
@@ -260,7 +265,10 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
 
 
   computed: _objectSpread({},
-  (0, _vuex.mapState)(['hasLogin', 'userInfo'])),
+  (0, _vuex.mapState)(['hasLogin', 'userInfo']), {
+    isShowLoginBtn: function isShowLoginBtn() {
+      return this.$store.state.isShowLoginBtn;
+    } }),
 
   methods: {
 
@@ -276,8 +284,30 @@ var startY = 0,moveY = 0,pageAtTop = true;var _default =
         url: url });
 
     },
+    /* 
+       微信登陆 
+        */
+    //第一授权获取用户信息===》按钮触发
+    wxGetUserInfo: function wxGetUserInfo() {
+      var that = this;
+      uni.getUserInfo({
+        provider: 'weixin',
+        success: function success(infoRes) {
+          that.$store.state.userInfo = {
+            nickname: infoRes.userInfo.nickName,
+            portrait: infoRes.userInfo.avatarUrl };
 
-    /**
+          that.$store.state.isShowLoginBtn = false;
+          try {
+            uni.setStorageSync('isCanUse', false); //记录是否第一次授权  false:表示不是第一次授权
+            _this.updateUserInfo();
+          } catch (e) {}
+        },
+        fail: function fail(res) {} });
+
+    },
+    /**{
+       	
         *  会员卡下拉和回弹
         *  1.关闭bounce避免ios端下拉冲突
         *  2.由于touchmove事件的缺陷（以前做小程序就遇到，比如20跳到40，h5反而好很多），下拉的时候会有掉帧的感觉
