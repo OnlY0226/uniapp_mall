@@ -32,11 +32,11 @@
 				<text>{{item.pname}}</text>
 			</view>
 		</view>
-		
+	<!-- 	
 		<view class="ad-1">
 			<image src="/static/temp/ad1.jpg" mode="scaleToFill"></image>
 		</view>
-		
+		 -->
 		<!-- 秒杀楼层 -->
 		<view class="seckill-section m-t">
 			<view class="s-header">
@@ -60,6 +60,7 @@
 					</view>
 				</view>
 			</scroll-view>
+			<view><text class="tip">查看更多</text></view>
 		</view>
 		
 		<!-- 团购楼层 -->
@@ -276,10 +277,12 @@
 				uni.request({
 				    url: 'http://127.0.0.1:8001/goods/showType',
 				    success: (res) => {
+						console.log(res)
 						this.parentType = res.data.data2
 				    }
 				});
-			}
+			},
+			// 计时器
 		},
 		// #ifndef MP
 		// 标题栏input搜索框点击
@@ -466,7 +469,7 @@
 	}
 	/* 秒杀专区 */
 	.seckill-section{
-		padding: 4upx 30upx 24upx;
+		padding: 4upx 30upx 50upx;
 		background: #fff;
 		.s-header{
 			display:flex;
@@ -524,7 +527,13 @@
 			}
 		}
 	}
-	
+	.tip{
+		font-size: 28rpx;
+		color: #909399;
+		margin: 0 20rpx 0 40rpx;
+		float: right;
+
+	}
 	.f-header{
 		display:flex;
 		align-items:center;
